@@ -9,15 +9,20 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@material-tailwind/html": "^3.0.0-beta.7",
+    "framer-motion": "^12.23.12",
+    "lottie-react": "^2.4.1",
+    "lucide-react": "^0.544.0",
+    "next": "15.5.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.5.3"
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4"
   }
 }
