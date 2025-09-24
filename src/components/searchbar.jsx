@@ -25,13 +25,6 @@ const SearchBar = ({
         />
       </div>
 
-      <button
-        type="submit"
-        className="flex w-full items-center justify-center gap-3 rounded-md bg-gray-600 px-5 py-1.5 text-lg text-white transition duration-300 ease-in-out hover:bg-black focus:z-10 focus:ring-4 focus:ring-gray-100 focus:outline-none md:w-auto"
-      >
-        <SearchIcon size={24} />
-        Search
-      </button>
     </form>
   );
 };

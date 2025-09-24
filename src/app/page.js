@@ -3,6 +3,7 @@
 import { useTimeStore } from '@/store/time';
 import { useEffect, useState } from 'react';
 import SearchBar from '@/components/searchbar';
+import { Spinner } from "@heroui/spinner";
 
 function formatTimeFromwaktu(waktu) {
   const date = new Date(waktu);
@@ -23,35 +24,51 @@ function getNextPrayerTime(jadwal, currentTime) {
     { name: 'Isya', time: jadwal?.isya },
   ];
 
-  const times = sholat.map(s => {
-    const [hh, mm] = s?.time.split(':');
-    return {
-      ...s,
-      date: new Date(currentTime?.getFullYear(), currentTime?.getMonth(), currentTime?.getDate(), parseInt(hh), parseInt(mm))
-    };
-  });
+  const times = sholat
+    .filter(s => Boolean(s.time))
+    .map(s => {
+      const [hh, mm] = s.time.split(':');
+      return {
+        ...s,
+        date: new Date(
+          currentTime.getFullYear(),
+          currentTime.getMonth(),
+          currentTime.getDate(),
+          parseInt(hh, 10),
+          parseInt(mm, 10)
+        )
+      };
+    });
+
+  // cari jadwal sholat berikutnya hari ini
+  let next = times.find(t => t.date > currentTime);
 
   // jika sudah melewati semua waktu sholat hari ini, next sholat adalah subuh besok
-  let nextPrayer = times.find(t => t.date > currentTime);
-  if (!nextPrayer) {
-    const [hh, mm] = jadwal.subuh.split(':');
-    nextPrayer = {
+  if (!next) {
+    const [hh, mm] = (jadwal?.subuh || '00:00').split(':');
+    next = {
       name: 'Subuh',
-      time: jadwal.subuh,
-      date: new Date(currentTime?.getFullYear(), currentTime?.getMonth(), currentTime?.getDate() + 1, parseInt(hh), parseInt(mm))
+      time: jadwal?.subuh,
+      date: new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
+        currentTime.getDate() + 1,
+        parseInt(hh, 10),
+        parseInt(mm, 10)
+      )
     };
-
-    const diffSec = Math.floor((nextPrayer.date - currentTime) / 1000);
-    const hours = Math.floor(diffSec / 3600);
-    const minutes = Math.floor((diffSec % 3600) / 60);
-    const seconds = diffSec % 60;
-
-    return {
-      name: nextPrayer.name,
-      time: nextPrayer.time,
-      countdown: `${hours} jam ${minutes} menit ${seconds} detik`,
-    }
   }
+
+  const diffSec = Math.max(0, Math.floor((next.date - currentTime) / 1000));
+  const hours = Math.floor(diffSec / 3600);
+  const minutes = Math.floor((diffSec % 3600) / 60);
+  const seconds = diffSec % 60;
+
+  return {
+    name: next.name,
+    time: next.time,
+    countdown: `${hours} jam ${minutes} menit ${seconds} detik`,
+  };
 }
 
 const Home = () => {
@@ -61,15 +78,7 @@ const Home = () => {
   const [listKota, setListKota] = useState([]);
   const [filteredKota, setFilteredKota] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-
-  const handleSearchSubmit = (event) => {
-    event.preventDefault()
-    // Perform search logic here
-    if (filteredKota.length > 0) {
-      getJadwal(filteredKota[0].id, filteredKota[0].lokasi);
-    }
-    setShowDropdown(false);
-  }
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => { //data kota default
     const fetchJadwal = async () => {
@@ -77,6 +86,7 @@ const Home = () => {
       const res = await fetch(`https://api.myquran.com/v2/sholat/jadwal/1301/${today}`);
       const data = await res.json();
       setJadwal(data.data.jadwal);
+      setLoading(false);
     };
     fetchJadwal();
   }, []);
@@ -102,7 +112,6 @@ const Home = () => {
   }, [search, listKota]);
 
   const getJadwal = async (id) => { //ambil jadwal setelah di filter
-
     const today = new Date().toISOString().split("T")[0];
     const res = await fetch(
       `https://api.myquran.com/v2/sholat/jadwal/${id}/${today}`
@@ -116,10 +125,25 @@ const Home = () => {
     setShowDropdown(true);
   }
 
-  if (!time) return <div>Loading...</div>;
-  if (!jadwal) return <div>Loading...</div>;
+  if (!time) return (
+    <div className='min-h-screen flex flex-col justify-center items-center px-4'>
+      <Spinner color="warning" label="Loading..." />
+    </div>
+  );
+  if (!jadwal) return (
+    <div className='min-h-screen flex flex-col justify-center items-center px-4'>
+      <Spinner color="warning" label="Loading..." />
+    </div>
+  );
   const nextPrayer = getNextPrayerTime(jadwal, time)
 
+  if (loading) {
+    return (
+      <div className='min-h-screen flex flex-col justify-center items-center px-4 z-50'>
+        <Spinner color="warning" label="Loading..." variant="dots" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center px-4">
@@ -127,7 +151,6 @@ const Home = () => {
         value={search}
         onChange={handleSearch}
         placeholder="Cari kota..."
-        onSubmit={handleSearchSubmit}
       />
       {showDropdown && filteredKota.length > 0 && (
         <ul
@@ -136,7 +159,7 @@ const Home = () => {
           {filteredKota.map((kota) => (
             <li
               key={kota.id}
-              onClick={() => setSearch(kota.lokasi) || setShowDropdown(false)}
+              onClick={() => setSearch(kota.lokasi) || setShowDropdown(false) || getJadwal(kota.id, kota.lokasi)}
               className='p-1 border-b-1 border-gray-400 hover:bg-gray-200'
               style={{
               }}
@@ -152,7 +175,7 @@ const Home = () => {
             {formatTimeFromwaktu(time)} WIB
           </div>
           <p className="mt-3 text-lg text-black">
-            {nextPrayer.countdown} menuju waktu {nextPrayer.name}
+            {nextPrayer?.countdown} menuju waktu {nextPrayer?.name}
           </p>
           <div className="mt-5 flex flex-col justify-center items-center gap-2 sm:flex-row sm:gap-5">
             <div className='flex flex-col text-lg'>

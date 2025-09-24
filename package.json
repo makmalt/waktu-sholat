@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@heroui/spinner": "^2.2.23",
     "@material-tailwind/html": "^3.0.0-beta.7",
     "framer-motion": "^12.23.12",
     "lottie-react": "^2.4.1",
