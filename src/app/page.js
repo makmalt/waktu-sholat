@@ -171,60 +171,62 @@ const Home = () => {
       )}
       <main id="content" className="text-center ">
         <div className="py-10">
-          <div className="block text-5xl font-bold text-black sm:text-6xl">
-            {formatTimeFromwaktu(time)}
+          <div className="w-full max-w-xl mx-auto p-5 rounded-2xl shadow border bg-white/80 text-center">
+            <div className="block text-5xl font-bold text-black sm:text-6xl">
+              {formatTimeFromwaktu(time)}
+            </div>
+            <p className="mt-3 text-lg text-black">
+              {nextPrayer?.countdown} menuju waktu sholat {nextPrayer?.name}
+            </p>
           </div>
-          <p className="mt-3 text-lg text-black">
-            {nextPrayer?.countdown} menuju waktu {nextPrayer?.name}
-          </p>
-          <div className="mt-5 flex flex-col justify-center items-center gap-2 sm:flex-row sm:gap-5">
-            <div className='flex flex-col text-lg'>
-              <h4 className=''>Shubuh</h4>
-              <div>
+          <div className="mt-5 flex flex-col justify-center items-center gap-3 sm:flex-row sm:gap-5">
+            <div className='flex flex-col text-lg items-center gap-1 p-4 rounded-xl shadow border bg-white/80 min-w-32'>
+              <h4 className='font-semibold'>Shubuh</h4>
+              <div className='text-2xl font-bold'>
                 {jadwal?.subuh ? (
                   jadwal.subuh
                 ) : (
-                  <div className="animate-pulse bg-gray-300 rounded h-4 w-20"></div>
+                  <div className="animate-pulse bg-gray-300 rounded h-5 w-24"></div>
                 )}
               </div>
             </div>
-            <div className='flex flex-col text-lg'>
-              <div>Dzuhur</div>
-              <div>
+            <div className='flex flex-col text-lg items-center gap-1 p-4 rounded-xl shadow border bg-white/80 min-w-32'>
+              <div className='font-semibold'>Dzuhur</div>
+              <div className='text-2xl font-bold'>
                 {jadwal?.dzuhur ? (
                   jadwal.dzuhur
                 ) : (
-                  <div className="animate-pulse bg-gray-300 rounded h-4 w-20"></div>
+                  <div className="animate-pulse bg-gray-300 rounded h-5 w-24"></div>
                 )}
               </div>
             </div>
-            <div className='flex flex-col text-lg'>
-              <div>Ashar</div>
-              <div>
+            <div className='flex flex-col text-lg items-center gap-1 p-4 rounded-xl shadow border bg-white/80 min-w-32'>
+              <div className='font-semibold'>Ashar</div>
+              <div className='text-2xl font-bold'>
                 {jadwal?.ashar ? (
                   jadwal.ashar
                 ) : (
-                  <div className="animate-pulse bg-gray-300 rounded h-4 w-20"></div>
+                  <div className="animate-pulse bg-gray-300 rounded h-5 w-24"></div>
                 )}
               </div>
             </div>
-            <div className='flex flex-col text-lg'>
-              <div>Maghrib</div>
-              <div>
+            <div className='flex flex-col text-lg items-center gap-1 p-4 rounded-xl shadow border bg-white/80 min-w-32'>
+              <div className='font-semibold'>Maghrib</div>
+              <div className='text-2xl font-bold'>
                 {jadwal?.maghrib ? (
                   jadwal.maghrib
                 ) : (
-                  <div className="animate-pulse bg-gray-300 rounded h-4 w-20"></div>
+                  <div className="animate-pulse bg-gray-300 rounded h-5 w-24"></div>
                 )}
               </div>
             </div>
-            <div className='flex flex-col text-lg'>
-              <div>Isya</div>
-              <div>
+            <div className='flex flex-col text-lg items-center gap-1 p-4 rounded-xl shadow border bg-white/80 min-w-32'>
+              <div className='font-semibold'>Isya</div>
+              <div className='text-2xl font-bold'>
                 {jadwal?.isya ? (
                   jadwal.isya
                 ) : (
-                  <div className="animate-pulse bg-gray-300 rounded h-4 w-20"></div>
+                  <div className="animate-pulse bg-gray-300 rounded h-5 w-24"></div>
                 )}
               </div>
             </div>

@@ -73,7 +73,7 @@ const Doa = () => {
       <div className="w-full max-w-3xl mt-10 fixed bottom-0 overflow-y-auto top-1/3 mb-2">
         <div className="p-4">
           {filteredDoa?.map((doa) => (
-            <div key={doa.judul} className="mb-4 p-4 rounded-lg shadow-md bg-white">
+            <div key={doa.judul} className="mb-4 p-4 rounded-lg shadow-md bg-white/80 border">
               <h2 className="text-2xl font-bold mb-2">{doa.judul}</h2>
               <p className="text-2xl mb-2 text-end">{doa.arab}</p>
               <p className="text-base mb-2 italic">{doa.indo}</p>
