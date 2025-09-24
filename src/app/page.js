@@ -172,7 +172,7 @@ const Home = () => {
       <main id="content" className="text-center ">
         <div className="py-10">
           <div className="block text-5xl font-bold text-black sm:text-6xl">
-            {formatTimeFromwaktu(time)} WIB
+            {formatTimeFromwaktu(time)}
           </div>
           <p className="mt-3 text-lg text-black">
             {nextPrayer?.countdown} menuju waktu {nextPrayer?.name}
