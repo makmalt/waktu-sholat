@@ -3,8 +3,7 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Mosque } from "@/animation/mosque";
 import ClientWrapper from "@/components/clientwrapper";
-
-
+import { ClientLayout } from "./clientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,13 +26,15 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ClientWrapper>
-          <div className="-z-10 fixed inset w-full h-40 opacity-80">
-            <Mosque />
-          </div>
-          <Navbar />
-          {children}
-        </ClientWrapper>
+        <ClientLayout>
+          <ClientWrapper>
+            <div className="-z-10 fixed inset w-full h-40 opacity-80">
+              <Mosque />
+            </div>
+            <Navbar />
+            {children}
+          </ClientWrapper>
+        </ClientLayout>
       </body>
     </html>
   );
