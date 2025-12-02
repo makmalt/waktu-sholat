@@ -123,7 +123,7 @@ const Home = () => {
   console.log("Jadwal:", jadwal);
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center px-4 top-1/4">
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 pt-30 sm:pt-0">
       <SearchBar
         value={search}
         onChange={handleSearch}
